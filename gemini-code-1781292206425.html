@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tissu Store | Concept</title>
+    <!-- Fonturile Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset și Variabile */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-neutral: #FFFFFF;      /* 60% */
+            --text-primary: #000505;    /* 30% */
+            --text-secondary: #6D6D6D;  /* Din zona de 30% */
+            --accent-color: #E63946;    /* 10% Roșu de accent */
+            --font-display: 'Montserrat', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+        }
+
+        /* Împiedică scroll-ul când modalul este deschis */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Header / Navigație */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 10%;
+            background-color: var(--bg-neutral);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-primary);
+        }
+
+        /* Secțiunea Hero (Punctul Focal Principal) */
+        .hero {
+            padding: 8rem 10%;
+            max-width: 1200px;
+        }
+
+        /* Denumirea magazinului - MARE, BOLD, EVIDENȚIATĂ */
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 6rem; /* Dimensiune masivă pentru impact maxim */
+            line-height: 0.9;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* Culoarea de accent (Roșu) - folosită doar aici */
+        .btn-accent {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-neutral);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-accent:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Secțiuni Informative */
+        .info-section {
+            padding: 6rem 10%;
+            border-top: 1px solid #EFEFEF;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .info-section h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* structura POP-UP (Fereastra Modală) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 5, 5, 0.85); /* Fundal întunecat cu opacitate */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Când modalul devine activ */
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: var(--bg-neutral);
+            padding: 4rem 3rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-content h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 10%;
+            background-color: var(--text-primary);
+            color: var(--bg-neutral);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            color: #6D6D6D;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .section-grid { grid-template-columns: 1fr; gap: 2rem; }
+            header { flex-direction: column; gap: 1rem; }
+            nav a { margin: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Antet -->
+    <header>
+        <div class="logo">Tissu.</div>
+        <nav>
+            <a href="#" class="active">Manifest</a>
+            <a href="#">Despre Noi</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Secțiunea Hero: TISSU STORE în prim-plan -->
+        <section class="hero">
+            <h1>Tissu Store</h1>
+            <p>O platformă conceptuală dedicată structurilor curate și modelelor moderne de business. Explorăm viitorul comerțului digital fără stocuri și fără bariere logistice.</p>
+            <!-- Butonul de Accent redenumit -->
+            <button class="btn-accent" id="openModalBtn">Ce este dropshippingul</button>
+        </section>
+
+        <!-- Secțiunea Informative 1 -->
+        <section class="info-section">
+            <div class="section-grid">
+                <div>
+                    <h2>Filozofia Noastră</h2>
+                </div>
+                <div>
+                    <p>Fiecare linie și fiecare detaliu din spațiul nostru digital spune o poveste despre eficiență. Ne concentrăm pe oferirea de informații clare într-un format minimalist – acolo unde structura întâlnește performanța.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FEREASTRA MODALĂ (Mica pagină de informații) -->
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            <h3>Ce este dropshippingul?</h3>
+            <p><strong>Dropshippingul</strong> este un model de afaceri în comerțul online în care magazinul (tu) nu păstrează produsele pe stoc.</p>
+            <p>Atunci când un client cumpără un produs de pe site-ul tău, tu transmiți comanda și detaliile de livrare direct unui furnizor terț (fabrică sau depozit), iar acesta expediază produsul direct la ușa cumpărătorului.</p>
+            <p><strong>Profitul tău</strong> reprezintă diferența dintre prețul de vânzare pe care îl stabilești tu pe site și prețul de engros pe care îl plătești furnizorului.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Tissu Store. Toate drepturile rezervate.</p>
+    </footer>
+
+    <!-- JavaScript pentru logica de deschidere/închidere pop-up -->
+    <script>
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalOverlay = document.getElementById('infoModal');
+        const body = document.body;
+
+        // Deschide modalul
+        openModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            body.classList.add('modal-open');
+        });
+
+        // Închide modalul la apăsarea pe butonul X
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            body.classList.remove('modal-open');
+        });
+
+        // Închide modalul dacă utilizatorul dă click în afara ferestrei albe (pe fundalul întunecat)
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+                body.classList.remove('modal-open');
+            }
+        });
+    </script>
+</body>
+</html>
