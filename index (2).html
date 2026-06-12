@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TISSUSTORE | Magazin Online</title>
+    
+    <style>
+        /* Reset și Variabile de Brand solicitate */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-neutral: #FFFFFF;      /* Background color */
+            --accent-color: #9C0000;    /* Accent color */
+            --text-primary: #000505;    /* Dark color */
+            --text-secondary: #6D6D6D;  /* Culoare neutră secundară */
+            
+            /* Font Sans-Serif Modern, Curat, Geometric */
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* NAVIGATION */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 10%;
+            background-color: var(--bg-neutral);
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-primary);
+        }
+
+        /* Butonul Say hello (Email) */
+        .btn-hello {
+            text-decoration: none;
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--text-primary);
+            padding: 0.6rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-right: 0; /* Override la margin-right */
+        }
+
+        .btn-hello:hover {
+            background-color: var(--text-primary);
+            color: var(--bg-neutral);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 6rem 10% 4rem 10%;
+            max-width: 1400px;
+        }
+
+        .hero-meta {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Denumirea mare și evidențiată */
+        .hero h1 {
+            font-size: 5.5rem;
+            font-weight: 900;
+            line-height: 1.0;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -2px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* Butonul de Accent */
+        .btn-accent {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-neutral);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s;
+        }
+
+        .btn-accent:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* SECȚIUNE STATISTICI (Template layout inclus) */
+        .stats-section {
+            padding: 2rem 10% 5rem 10%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1400px;
+        }
+
+        .stat-box {
+            border-left: 3px solid var(--text-primary);
+            padding-left: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* GRIDUL DE IMAGINI (Pătratele placeholder) */
+        .photo-gallery {
+            padding: 0 10% 6rem 10%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Structura pătrată pentru poze */
+        .photo-square {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* Raport 1:1 */
+            background-color: #F7F7F7;
+            border: 1px solid #EFEFEF;
+            transition: background-color 0.3s ease;
+        }
+
+        .photo-square:hover {
+            background-color: #EFEFEF;
+        }
+
+        .photo-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #B0B0B0;
+        }
+
+        /* SECȚIUNI INFORMATIVE */
+        .info-section {
+            padding: 6rem 10%;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .info-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* POP-UP (MODAL) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 5, 5, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: var(--bg-neutral);
+            padding: 4rem 3rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-content h3 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 4rem 10%;
+            background-color: var(--text-primary);
+            color: var(--bg-neutral);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: #6D6D6D;
+        }
+
+        /* RESPONSIVE DESIGN (MOBIL & TABLETĂ) */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 4rem; }
+            .photo-gallery { grid-template-columns: repeat(2, 1fr); }
+            .stats-section { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem 5%;
+            }
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav a {
+                margin-right: 0;
+            }
+            .hero {
+                padding: 4rem 5% 3rem 5%;
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 1rem 5% 4rem 5%;
+            }
+            .photo-gallery {
+                grid-template-columns: 1fr;
+                padding: 0 5% 4rem 5%;
+            }
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .info-section {
+                padding: 4rem 5%;
+            }
+            .modal-content {
+                padding: 3rem 1.5rem;
+            }
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 3rem 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">TISSUSTORE</div>
+        <nav>
+            <a href="#" class="active">Concept</a>
+            <a href="#">Despre</a>
+            <a href="mailto:tissu.storemd@gmail.com" class="btn-hello">Say Hello</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-meta">Chisinau &bull; Magazin Online</div>
+            <h1>Tissu Store</h1>
+            <h2>Ce poti cumpara la noi?</h2>
+            <p class="tagline">Haine, Accesorii, Tehnica, Incaltaminte, etc.</p>
+            <button class="btn-accent" id="openModalBtn">Ce este dropshippingul</button>
+        </section>
+
+        <section class="stats-section">
+            <div class="stat-box">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Comenzi livrate</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">2-4 zile</div>
+                <div class="stat-label">Cat timp este livrarea?</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">2 ani</div>
+                <div class="stat-label">Cat timp sunteti pe piata?</div>
+            </div>
+        </section>
+
+        <section class="photo-gallery">
+            <div class="photo-square"><div class="photo-label">photo1.jpg</div></div>
+            <div class="photo-square"><div class="photo-label">photo2.jpg</div></div>
+            <div class="photo-square"><div class="photo-label">photo3.jpg</div></div>
+            <div class="photo-square"><div class="photo-label">photo4.jpg</div></div>
+        </section>
+
+        <section class="info-section">
+            <div class="section-grid">
+                <div>
+                    <h2>Filozofia Noastră</h2>
+                </div>
+                <div>
+                    <p>Ne concentrăm pe eliminarea barierelor din comerțul digital tradițional. Spațiul nostru pune accent pe claritate, viteză și structuri tehnice scalabile direct din Chisinau.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            <h3>Ce este dropshippingul?</h3>
+            <p><strong>Dropshippingul</strong> este un model de afaceri în comerțul online în care magazinul nu păstrează produsele pe stoc.</p>
+            <p>Atunci când un client cumpără un produs, comanda este trimisă automat unui furnizor terț, iar acesta expediază produsul direct la cumpărător.</p>
+            <p><strong>Avantajul principal</strong> este eliminarea completă a costurilor de depozitare și a riscurilor legate de stocurile nevândute.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 TISSUSTORE. Toate drepturile rezervate.</p>
+        <p>Contact: tissu.storemd@gmail.com</p>
+    </footer>
+
+    <script>
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalOverlay = document.getElementById('infoModal');
+        const body = document.body;
+
+        openModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            body.classList.add('modal-open');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            body.classList.remove('modal-open');
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+                body.classList.remove('modal-open');
+            }
+        });
+    </script>
+</body>
+</html>
